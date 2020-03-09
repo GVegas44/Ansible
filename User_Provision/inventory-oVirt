@@ -1,0 +1,27 @@
+#[all:vars]
+#ansible_user
+
+
+[splunk_cluster]
+splunkmaster.gvegas44.local
+splunksh1.gvegas44.local
+splunksp1.gvegas44.local
+
+[search_head]
+splunksh1.gvegas44.local
+
+[sh_captain]
+# captain is also a search head
+# and the role is dynamic after initialization
+
+#[sh_deployer]
+#node6
+
+[master_node]
+splunkmaster.gvegas44.local
+
+[license_master]
+splunkmaster.gvegas44.local
+
+[search_peer]
+splunksp1.gvegas44.local

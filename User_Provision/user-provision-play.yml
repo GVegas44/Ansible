@@ -1,0 +1,41 @@
+# user-prov-playbook.yml
+---
+- hosts: 
+    - splunk_cluster
+  become: yes
+  tasks: 
+
+    - name: create user group
+      group: 
+        name: "{{ username }}"
+        state: present
+
+    - name: create user "{{ username }}"
+      user:
+        name: "{{ username }}"
+        comment: Automation
+        group: "{{ username }}"
+        state: present
+        groups: 
+          - "{{ userGroup }}"
+          - "{{ sudoGroup }}"
+            
+    - name: set authorized key
+      authorized_key:
+        user: "{{ username }}"
+        key: "{{ lookup('file', './ssh/ansible.id_rsa.pub') }}"
+        comment: 'ansible automation'
+        state: present
+
+    - name: deploy sudoers.d file
+      template:
+        src: sudoers.j2
+        dest: /etc/sudoers.d/{{ username }}
+        validate: 'visudo -cf %s'
+        mode: 0440
+
+  vars:
+    username: gvegas
+    sudoer: "{{ username }}"
+    userGroup: "{{ username }}"
+    sudoGroup: "{{ 'sudo' if ansible_distribution == 'Ubuntu' else 'wheel' }}"
