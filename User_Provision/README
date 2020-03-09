@@ -1,0 +1,6 @@
+Running the Playbook
+
+ansible-playbook  --inventory-file=inventory-oVirt user-prov-playbook.yml --extra-vars 'ansible_user=root' -k
+
+Modify User
+Modify Iventory
